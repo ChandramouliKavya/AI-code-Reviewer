@@ -1,38 +1,45 @@
 import streamlit as st
 import google.generativeai as genai
-from IPython.display import Markdown
 import os
+import time
 
+# 🎯 App Title
+st.title("🚀 AI Code Reviewer")
 
-st.title(" :left_speech_bubble: An AI Code Reviewer")
-
-# Load API key securely from a file
+# ✅ Load API Key Securely
 api_key = os.getenv("GEMINI_API_KEY")
+if not api_key:
+    st.error("API key is missing! Set GEMINI_API_KEY as an environment variable.")
+    st.stop()
 
-# Configure Gemini API
+# ✅ Configure Gemini API
 genai.configure(api_key=api_key)
 
-# Define system instructions
-system_prompt = """You are a Python Developer tutor. You can resolve Python-related queries, 
-review code, identify potential bugs, and suggest improvements. 
-If someone asks about non-Python topics, politely request relevant queries only."""
+# ✅ Initialize Model (Faster Model)
+gemini = genai.GenerativeModel(model_name="gemini-1.5-pro", system_instruction="You are a Python tutor...")
 
+# ✅ Cache API Calls to Reduce Response Time
+@st.cache_data
+def get_review(prompt):
+    start_time = time.time()  # Measure API response time
+    response = gemini.generate_content(prompt).text
+    end_time = time.time()
+    return response, round(end_time - start_time, 2)  # Return response + time taken
 
+# 🎯 User Input
+user_prompt = st.text_area("Enter your Python code:")
 
+# 🎯 Button to Generate Review
+if st.button("🔍 Generate Review"):
+    if not user_prompt.strip():
+        st.warning("Please enter some Python code before generating a review.")
+    else:
+        with st.spinner("Analyzing your code..."):
+            response_text, response_time = get_review(user_prompt)  # Cached API Call
 
-# taking the prompt fom the user 
-user_prompt = st.text_area("Enter your Python code :")
+        # ✅ Display Results
+        st.subheader("🔍 Code Review")
+        st.markdown(response_text)
+        st.success(f"✅ Review generated in {response_time} seconds")
 
-button = st.button(" :orange[Generate Review]")
-# Extract and display response
-if button == True:
-    # Initialize Gemini model
-    gemini = genai.GenerativeModel(model_name="gemini-1.5-pro", system_instruction=system_prompt)
-
-
-    # Generate response
-    response = gemini.generate_content(user_prompt)
-    st.header("Code Review")
-    st.header("Bug Report")
-    st.markdown(response.text)
 
