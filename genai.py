@@ -13,7 +13,8 @@ api_key = os.getenv("GEMINI_API_KEY")
 genai.configure(api_key=api_key)
 
 # ✅ Initialize Model (Faster Model)
-gemini = genai.GenerativeModel(model_name="gemini-1.5-pro", system_instruction="You are a Python tutor...")
+
+gemini = genai.GenerativeModel(model_name="gemini-1.5-flash", system_instruction="You are a Python tutor...")
 
 # ✅ Cache API Calls to Reduce Response Time
 @st.cache_data
@@ -28,15 +29,15 @@ user_prompt = st.text_area("Enter your Python code:")
 
 # 🎯 Button to Generate Review
 if st.button("🔍 Generate Review"):
-    if not user_prompt.strip():
-        st.warning("Please enter some Python code before generating a review.")
-    else:
+    if user_prompt.strip():
         with st.spinner("Analyzing your code..."):
-            response_text, response_time = get_review(user_prompt)  # Cached API Call
+            response = gemini.generate_content(user_prompt, stream=True)  # Stream output
+            
+            st.subheader("🔍 Code Review")
+            response_text = ""
+            for chunk in response:
+                response_text += chunk.text  # Append text chunks
+                st.markdown(response_text)  # Show output as it comes
 
-        # ✅ Display Results
-        st.subheader("🔍 Code Review")
-        st.markdown(response_text)
-        st.success(f"✅ Review generated in {response_time} seconds")
 
 
