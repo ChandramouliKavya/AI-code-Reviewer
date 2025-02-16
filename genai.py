@@ -16,13 +16,6 @@ genai.configure(api_key=api_key)
 
 gemini = genai.GenerativeModel(model_name="gemini-1.5-flash", system_instruction="You are a Python tutor...")
 
-# ✅ Cache API Calls to Reduce Response Time
-@st.cache_data
-def get_review(prompt):
-    start_time = time.time()  # Measure API response time
-    response = gemini.generate_content(prompt).text
-    end_time = time.time()
-    return response, round(end_time - start_time, 2)  # Return response + time taken
 
 # 🎯 User Input
 user_prompt = st.text_area("Enter your Python code:")
