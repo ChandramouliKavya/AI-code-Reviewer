@@ -8,9 +8,6 @@ st.title("🚀 AI Code Reviewer")
 
 # ✅ Load API Key Securely
 api_key = os.getenv("GEMINI_API_KEY")
-if not api_key:
-    st.error("API key is missing! Set GEMINI_API_KEY as an environment variable.")
-    st.stop()
 
 # ✅ Configure Gemini API
 genai.configure(api_key=api_key)
