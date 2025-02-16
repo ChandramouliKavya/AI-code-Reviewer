@@ -27,7 +27,8 @@ button = st.button(" :orange[Generate Review]")
 # Extract and display response
 if button == True:
     # Initialize Gemini model
-    gemini = genai.GenerativeModel(model_name="gemini-1.5-flash", system_instruction=system_prompt)
+    gemini = genai.GenerativeModel(model_name="gemini-1.5-pro", system_instruction=system_prompt)
+
 
     # Generate response
     response = gemini.generate_content(user_prompt)
