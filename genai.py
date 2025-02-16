@@ -1,9 +1,7 @@
 import streamlit as st
 import google.generativeai as genai
 import os
-import time
 
-# 🎯 App Title
 st.title("🚀 AI Code Reviewer")
 
 # ✅ Load API Key Securely
@@ -12,8 +10,7 @@ api_key = os.getenv("GEMINI_API_KEY")
 # ✅ Configure Gemini API
 genai.configure(api_key=api_key)
 
-# ✅ Initialize Model (Faster Model)
-
+# ✅ Initialize Model
 gemini = genai.GenerativeModel(model_name="gemini-1.5-flash", system_instruction="You are a Python tutor...")
 
 
