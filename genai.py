@@ -1,12 +1,13 @@
 import streamlit as st
 import google.generativeai as genai
 from IPython.display import Markdown
+import os
+
 
 st.title(" :left_speech_bubble: An AI Code Reviewer")
 
 # Load API key securely from a file
-with open(r"C:\Users\chand\Innomatics\INTERNSHIP\Api key\gemini.txt", "r") as f:
-    api_key = f.read().strip()
+api_key = os.getenv("GEMINI_API_KEY")
 
 # Configure Gemini API
 genai.configure(api_key=api_key)
