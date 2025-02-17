@@ -4,7 +4,7 @@ import google.generativeai as genai
 st.title("🚀 AI Code Reviewer")
 
 # ✅ Load API Key Securely
-api_key = st.secrets["GEMINI_API_KEY"]
+api_key = st.secrets["GOOGLE_API_KEY"]
 
 # ✅ Configure Gemini API
 genai.configure(api_key=api_key)
