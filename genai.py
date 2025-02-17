@@ -1,11 +1,10 @@
 import streamlit as st
 import google.generativeai as genai
-import os
 
 st.title("🚀 AI Code Reviewer")
 
 # ✅ Load API Key Securely
-api_key = os.getenv("GEMINI_API_KEY")
+api_key = st.secrets["GEMINI_API_KEY"]
 
 # ✅ Configure Gemini API
 genai.configure(api_key=api_key)
